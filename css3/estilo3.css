@@ -1,0 +1,25 @@
+body{
+	background-image: url(roma.jpg);
+	background-repeat: no-repeat;
+	background-color: lightblue;
+	background-position: 100px 0px;
+	background-size: 1200px 800px;
+}
+
+.paragrafo{
+	border-style: solid;
+	border-width: 10px; 
+	border-color: #996633;
+	box-shadow: 4px 4px 5px 2px black, 2px 2px 4px 2px black inset;
+	margin: 50px 150px;
+	background-color: rgba(255,255,255,0.8); 
+	padding: 20px 15px 10px 15px;
+	border-top-right-radius: 30px;
+	border-bottom-left-radius: 30px;
+	border-top-left-radius: 30px;
+	border-bottom-right-radius: 30px;
+	max-height: 300px;
+	max-width: 240px;
+	text-align: center;
+
+}
