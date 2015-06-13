@@ -1,0 +1,79 @@
+<!DOCTYPE HTML>
+
+<html>
+	<head>
+		<title>Apenas um teste</title>
+		<meta charset="utf-8">
+		
+	</head>
+
+	<style>
+	#comentarios{
+		background-color: lightgray;
+		
+	}
+	</style>
+
+
+<body>
+
+	<table>
+		<tr>
+			<td colspan="0"><img src = "ViniciusDeMoraes.jpg" width = 80 weight = 80></td>
+			<td><h2>Vinicius de Moraes</h2></td>
+		</tr>
+		<tr>
+			<td colspan="2">Amai, porque nada melhor para a saúde que um amor correspondido.</td>
+		</tr>
+		<tr>
+			<td id="like">0 pessoas curtiram isso</td>
+			<td></br><input type="button" value="Like" id="buttonLike"/></td>
+		</tr>
+	</table>
+
+	<table id = "comentarios">
+		<tr>
+			<td colspan="2">Comentários</td>
+		</tr>
+	</table>
+
+	<table>
+		<tr>
+			<td><textarea name ="Area" id="Area"></textarea></td>
+			<td><input type="button" value="Comentar" id="buttonComent"/></td>
+		</tr>
+	</table>
+
+
+	<script>
+	
+		var count = 0;
+		var count2 = 1;
+		document.getElementById("buttonLike").onclick = function(){
+ 	 		count++;
+ 	 		document.getElementById("like").innerHTML = (count + " pessoas curtiram isso");
+		}
+
+		var tabela = document.getElementById("comentarios");
+
+
+		document.getElementById("buttonComent").onclick = function(){
+			if(Area.value != ""){
+				var linha = tabela.appendChild(document.createElement("tr"));
+				var coluna = linha.appendChild(document.createElement("td"));
+
+				coluna.setAttribute("id",count2);
+
+				document.getElementById(count2).innerHTML = Area.value;
+				count2++;
+				Area.value = "";
+			}
+		}
+
+
+		
+	</script>
+
+  	
+</body>
+</html>
