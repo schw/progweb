@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<title>Square Game</title>
+		<meta charset="utf-8">
+		<link rel="stylesheet" type="text/css" href="estilo.css">
+		
+	</head>
+
+<body onload="criarTabela(10,10)">
+	<h1>Square Game</h1>
+
+	<div id="game">
+		<table id="tabela"></table>
+	</div>
+
+	<div id="menu">
+		<table>
+			<tr>
+				<td style="height: 60px; width: 60px; background-color: green;" ></td>
+				<td style="height: 60px; width: 60px; background-color: yellow;" ></td>
+			</tr>
+			<tr>
+				<td style="text-align: center;">player 1</td>
+				<td style="text-align: center;">player 2</td>
+			</tr>
+			<tr>
+				<td style="text-align: center;"><h2 id="count1">0</h2></td>
+				<td style="text-align: center;"><h2 id="count2">0</h2></td>
+			</tr>
+			<tr>
+				<td colspan="2" style="text-align: center;" onclick="location.reload();"><button>Restart Game</button></td>
+			</tr>
+		</table>
+	</div>
+
+	<!--
+	<script type="text/javascript">
+
+		var count1 = 0; 
+		var count2 = 0;
+		var tamanho = 9;
+
+		var table_game = document.getElementById("game");
+		for (count1= 0; count1 < (2*tamanho)-1; count1++){
+			var linha = table_game.appendChild(document.createElement("tr"));
+
+			for(count2=0; count2 < (2*tamanho)-1; count2++){
+				var coluna = linha.appendChild(document.createElement("td"));
+				var img = coluna.appendChild(document.createElement("img"));
+			
+				//img.setAttribute("id",(10*count1) + count2));
+				if((count1 % 2 == 0) && (count2 % 2 == 0)){
+					img.setAttribute("src","d.gif");
+
+				}else if((count1 % 2 ==0) && (count2 % 2 ==1)){
+					img.setAttribute("src","h0.gif");
+
+				}else if((count1 % 2 ==1) && (count2 % 2 ==0)){
+					img.setAttribute("src","v0.gif");
+
+				}else if((count1 % 2 ==1) && (count2 % 2 ==1)){
+					img.setAttribute("src","p0.gif");
+
+				}
+			}
+		}
+
+	</script>
+-->
+
+	<script>
+		var marcados = [];
+		var player = 0;
+		var count1 = 0;
+		var count2 = 0;
+		var quantidadeLinha = 0;
+		var quantidadeColuna = 0;
+
+		function criarTabela(lin, col){
+			quantidadeLinha = (lin * 2) + 1;
+			quantidadeColuna = (col * 2) + 1;
+			marcados = new Array(lin);
+			var tabela = document.getElementById("tabela");
+			lin = (lin * 2) + 1;
+			col = (col * 2) + 1;
+			
+			for(i = 0;i < lin; i++) {
+				marcados[i] = new Array(col);
+				linha = document.createElement("tr");
+				linha.setAttribute("id", "lin"+i);
+				tabela.appendChild(linha);
+				for(j = 0; j < col;j++){
+					coluna = document.createElement("td");
+					if (j % 2 == 0 && i % 2 == 0) {
+						coluna.setAttribute("class", "encruzilhada");
+					} else if (j % 2 == 1 && i % 2 == 0) {
+						coluna.setAttribute("class", "h");
+						coluna.setAttribute("onclick", "jogadaHorizontal("+i+","+j+")");
+						marcados[i][j] = 0;
+					} else if (j % 2 == 0 && i % 2 == 1) {
+						coluna.setAttribute("class", "v");
+						coluna.setAttribute("onclick", "jogadaVertical("+i+","+j+")");
+						marcados[i][j] = 0;
+					}
+					coluna.setAttribute("id", "col_"+i+"_"+j);
+					linha.appendChild(coluna);
+				}
+			}
+			
+		}
+
+		function pontuarHorizontal(lin,col){
+			celula = document.getElementById("col_"+lin+"_"+col);
+			marcados[lin][col] = 1;
+			completou = 0;
+			if (lin < quantidadeLinha - 1) {
+				if (marcados[lin+1][col+1] == 1 && marcados[lin+2][col] == 1 && marcados[lin+1][col - 1] == 1) {
+					completou = 1;
+					celula.setAttribute("class", "p");
+					document.getElementById("col_"+(lin+1)+"_"+(col+1)).setAttribute("class", "p");
+					document.getElementById("col_"+(lin+2)+"_"+(col+0)).setAttribute("class", "p");
+					document.getElementById("col_"+(lin+1)+"_"+(col-1)).setAttribute("class", "p");
+					if (player < 1) {
+						document.getElementById("col_"+(lin+1)+"_"+col).setAttribute("class", "verde");
+						count1 += 1;
+					} else {
+						document.getElementById("col_"+(lin+1)+"_"+col).setAttribute("class", "amarelo");
+						count2 += 1;
+					}
+				} 
+			}
+			
+			if(lin > 0){
+				if (marcados[lin-1][col+1] == 1 && marcados[lin-2][col] == 1 && marcados[lin-1][col - 1] == 1) {
+					completou = 1;
+					celula.setAttribute("class", "p");
+					document.getElementById("col_"+(lin-1)+"_"+(col+1)).setAttribute("class", "p");
+					document.getElementById("col_"+(lin-2)+"_"+(col+0)).setAttribute("class", "p");
+					document.getElementById("col_"+(lin-1)+"_"+(col-1)).setAttribute("class", "p");
+					if (player < 1){
+						document.getElementById("col_"+(lin-1)+"_"+col).setAttribute("class", "verde");
+						count1 += 1;
+					}else{
+						document.getElementById("col_"+(lin-1)+"_"+col).setAttribute("class", "amarelo");
+						count2 += 1;
+					}
+				}
+			}
+
+			if (completou == 0){
+				if (player < 1){
+					celula.setAttribute("class", "verde");
+					player = 1;
+				}else{
+					celula.setAttribute("class", "amarelo");
+					player = 0;
+				}
+			}
+			
+			document.getElementById("count1").innerHTML = count1;
+			document.getElementById("count2").innerHTML = count2;
+		}
+
+		function jogadaHorizontal(lin, col){
+			console.log(lin+" "+col);
+			if (marcados[lin][col] < 1) {
+				pontuarHorizontal(lin,col);
+			}
+		}
+
+		function pontuarVertical(lin,col){
+			celula = document.getElementById("col_"+lin+"_"+col);
+			marcados[lin][col] = 1;
+			completou = 0;
+			if (col < (quantidadeColuna - 1)) {
+				if (marcados[lin-1][col+1] == 1 && marcados[lin+0][col+2] == 1 && marcados[lin+1][col+1] == 1) {
+					completou = 1;
+					celula.setAttribute("class", "p");
+					document.getElementById("col_"+(lin-1)+"_"+(col+1)).setAttribute("class", "p");
+					document.getElementById("col_"+(lin+0)+"_"+(col+2)).setAttribute("class", "p");
+					document.getElementById("col_"+(lin+1)+"_"+(col+1)).setAttribute("class", "p");
+					if (player < 1) {
+						document.getElementById("col_"+(lin+0)+"_"+(col+1)).setAttribute("class", "verde");
+						count1 += 1;
+					} else {
+						document.getElementById("col_"+(lin+0)+"_"+(col+1)).setAttribute("class", "amarelo");
+						count2 += 1;
+					}
+				} 
+			}
+			
+			if (col > 0){
+				if (marcados[lin-1][col-1] == 1 && marcados[lin+0][col-2] == 1 && marcados[lin+1][col-1] == 1) {
+					completou = 1;
+					celula.setAttribute("class", "p");
+					document.getElementById("col_"+(lin-1)+"_"+(col-1)).setAttribute("class", "p");
+					document.getElementById("col_"+(lin+0)+"_"+(col-2)).setAttribute("class", "p");
+					document.getElementById("col_"+(lin+1)+"_"+(col-1)).setAttribute("class", "p");
+					if (player < 1) {
+						document.getElementById("col_"+(lin+0)+"_"+(col-1)).setAttribute("class", "verde");
+						count1 += 1;
+					} else {
+						document.getElementById("col_"+(lin+0)+"_"+(col-1)).setAttribute("class", "amarelo");
+						count2 += 1;
+					}
+				}
+			}
+			if (completou == 0){
+				if (player < 1){
+					celula.setAttribute("class", "verde");
+					player = 1;
+				} else {
+					celula.setAttribute("class", "amarelo");
+					player = 0;
+				}
+			}
+		}
+
+		function jogadaVertical(lin, col){
+			console.log(lin+" "+col);
+			if (marcados[lin][col] < 1) {
+				pontuarVertical(lin,col);
+			}
+		}
+
+			
+			document.getElementById("count1").innerHTML = count1;
+			document.getElementById("count2").innerHTML = count2;
+
+	</script>
+
+</body>
+</html>
